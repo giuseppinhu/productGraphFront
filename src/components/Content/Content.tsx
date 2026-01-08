@@ -1,8 +1,33 @@
+import { useEffect, useState } from "react";
 import KpiCard from "../KpiCard/KpiCard";
 import ProductItem from "../ProductItem/ProductItem";
 import TableRow from "../TableRow/TableRow";
 
 const Content = () => {
+  const [data, setData]: any = useState({})
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetch('http://localhost:3000/data/dashboard')
+    .then(res => res.json())
+    .then(data => {
+      setData(data);
+      setLoading(false)
+    })
+    .catch((err) => {
+      console.error("Erro na busca", err)
+    })
+  }, [])
+
+  const dataDash = data?.data ?? {}
+
+  console.log(dataDash)
+
+
+  if (loading) {
+    return <div>Carregando...</div>;
+  }
+  
   return (
     <div className="flex h-screen w-full bg-gray-950 text-white font-sans">
       <main className="flex-1 overflow-y-auto bg-gray-950 p-4 md:p-8">
@@ -24,10 +49,10 @@ const Content = () => {
 
         {/* KPIs */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-          <KpiCard title="Receita Total" value="R$ 124.500" change="+12.5%" isPositive={true} icon="💰" />
-          <KpiCard title="Vendas" value="1,240" change="+8.2%" isPositive={true} icon="shopping_cart" />
-          <KpiCard title="Novos Clientes" value="350" change="-2.4%" isPositive={false} icon="group" />
-          <KpiCard title="Ticket Médio" value="R$ 100,40" change="+4.1%" isPositive={true} icon="trending_up" />
+          <KpiCard title="Receita Total" value={dataDash.sales.current.totalRevenue} change={dataDash.sales.metrics.revenueGrowth.percentage} isPositive={dataDash.sales.metrics.revenueGrowth.isPositive} icon="💰" cash />
+          <KpiCard title="Vendas" value={dataDash.sales.current.totalSales} change={dataDash.sales.metrics.salesGrowth.percentage} isPositive={dataDash.sales.metrics.salesGrowth.isPositive} icon="shopping_cart" />
+          <KpiCard title="Ticket Médio" value={dataDash.sales.metrics.ticketGrowth.value} change={dataDash.sales.metrics.ticketGrowth.percentage} isPositive={dataDash.sales.metrics.ticketGrowth.isPositive} icon="trending_up" cash />
+          <KpiCard title="Novos Clientes" value={dataDash.users_new.currentCount} change={dataDash.users_new.percentage} isPositive={dataDash.users_new.isPositive} icon="group" />
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -52,9 +77,11 @@ const Content = () => {
           <div className="bg-gray-900 rounded-xl border border-gray-800 p-6 shadow-sm">
             <h3 className="font-bold text-lg mb-4">Mais Vendidos</h3>
             <div className="space-y-4">
-              <ProductItem name="Fone Bluetooth Pro" sales="120 vendas" price="R$ 299" />
-              <ProductItem name="Teclado Mecânico" sales="85 vendas" price="R$ 450" />
-              <ProductItem name="Mouse Gamer" sales="74 vendas" price="R$ 120" />
+              {dataDash.productSales.map((product: any) => {
+                return (
+                  <ProductItem name={product.name} sales={product.totalQuantity} price={product.totalSales.$numberDecimal} />
+                )
+              })}
             </div>
           </div>
         </div>
@@ -76,9 +103,19 @@ const Content = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
-                <TableRow id="#1254" client="Ana Silva" date="31 Dez, 2024" status="Concluído" value="R$ 350,00" />
-                <TableRow id="#1253" client="Carlos Mendes" date="30 Dez, 2024" status="Pendente" value="R$ 120,50" />
-                <TableRow id="#1253" client="Carlos Mendes" date="30 Dez, 2024" status="Cancelado" value="R$ 120,50" />
+                {(dataDash.salesLast).map((sale: any) => {
+                  const value = Number(sale.totalPrice?.$numberDecimal ?? sale.totalPrice ?? 0);
+                  return (
+                    <TableRow
+                      key={sale._id}
+                      id={sale._id}
+                      client={sale.name}
+                      date={String(sale.saleDate)}
+                      status={sale.status}
+                      value={value}
+                    />
+                  );
+                })}
               </tbody>
             </table>
           </div>
@@ -87,11 +124,5 @@ const Content = () => {
     </div>
   );
 };
-
-// --- Componentes Auxiliares Tipados ---
-
-
-
-
 
 export default Content;
