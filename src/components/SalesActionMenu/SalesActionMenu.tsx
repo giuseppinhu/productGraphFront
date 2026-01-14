@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { toast } from "react-toastify";
 
 const SalesActionMenu: React.FC<{ saleId: string }> = ({ saleId }) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -13,6 +14,21 @@ const SalesActionMenu: React.FC<{ saleId: string }> = ({ saleId }) => {
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
+
+  const deleteSale = (id: string) => {
+    fetch(`http://localhost:3000/sale`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ id }),
+    }).then((res) => {
+      if (res.ok) {
+        toast.success("Venda excluída com sucesso!");
+        window.location.reload();
+      }
+    });
+  };
 
   return (
     <div className="relative flex justify-center" ref={menuRef}>
@@ -59,7 +75,7 @@ const SalesActionMenu: React.FC<{ saleId: string }> = ({ saleId }) => {
 
           <button
             onClick={() => {
-              console.log("Excluir", saleId);
+              deleteSale(saleId);
               setIsOpen(false);
             }}
             className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-red-950/30 transition-colors flex items-center gap-3"
