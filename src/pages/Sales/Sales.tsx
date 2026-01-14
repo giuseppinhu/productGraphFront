@@ -9,22 +9,13 @@ import { getDate } from "../../utils/formatData";
 
 import { ToastContainer, toast } from "react-toastify";
 
-interface Sale {
-  sales: SalesData[];
-}
-
-interface SalesData {
-  id: string;
-  product: string;
-  client: string;
-  totalPrice: number;
-  saleDate: string;
-  status: "pending" | "completed" | "canceled";
-}
-
 const Sales = () => {
   const [searchTerm, setSearchTerm] = useState<string>("");
-  const [data, setData] = useState<Sale>({ sales: [] });
+  const [data, setData] = useState<Sale>({
+    sales: [],
+    budges: { totalRevenue: 0, quantity: 0 },
+    AUR: 0,
+  });
   const [loading, setLoading] = useState(true);
 
   const pasteId = (id: string) => {
@@ -44,11 +35,12 @@ const Sales = () => {
       });
   }, []);
 
-  const filteredSales = data.sales.filter((sale) =>
-    sale.client.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sale.product.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sale.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    sale.status.toLowerCase().includes(searchTerm.toLowerCase())
+  const filteredSales = data.sales.filter(
+    (sale: SalesData) =>
+      sale.client.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      sale.product.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      sale.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      sale.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   if (loading) {
@@ -75,16 +67,20 @@ const Sales = () => {
         {/* Mini Stats de Vendas */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
           <div className="bg-gray-900 p-5 rounded-xl border border-gray-800">
-            <p className="text-gray-400 text-sm">Vendas hoje</p>
-            <h3 className="text-2xl font-bold">14</h3>
+            <p className="text-gray-400 text-sm">Vendas (7 dias)</p>
+            <h3 className="text-2xl font-bold">{data.budges.quantity}</h3>
           </div>
           <div className="bg-gray-900 p-5 rounded-xl border border-gray-800">
             <p className="text-gray-400 text-sm">Faturamento (7 dias)</p>
-            <h3 className="text-2xl font-bold text-green-400">R$ 12.450,00</h3>
+            <h3 className="text-2xl font-bold text-green-400">
+              {formatPrice(data.budges.totalRevenue)}
+            </h3>
           </div>
           <div className="bg-gray-900 p-5 rounded-xl border border-gray-800">
-            <p className="text-gray-400 text-sm">Taxa de Conversão</p>
-            <h3 className="text-2xl font-bold text-blue-400">3.2%</h3>
+            <p className="text-gray-400 text-sm">
+              Proporção de Usuários Ativos
+            </p>
+            <h3 className="text-2xl font-bold text-blue-400">{data.AUR}</h3>
           </div>
         </div>
 
@@ -104,9 +100,12 @@ const Sales = () => {
               />
             </div>
             <div className="flex gap-2">
-              <select className="bg-gray-950 border border-gray-700 text-sm rounded-lg px-3 py-2 outline-none" onChange={(e) => setSearchTerm(e.target.value)}>
+              <select
+                className="bg-gray-950 border border-gray-700 text-sm rounded-lg px-3 py-2 outline-none"
+                onChange={(e) => setSearchTerm(e.target.value)}
+              >
                 <option value={" "}>Todos os produtos</option>
-                <option  value={"completed"}>Completo</option>
+                <option value={"completed"}>Completo</option>
                 <option value={"pending"}>Pendente</option>
                 <option value={"canceled"}>Cancelado</option>
               </select>
@@ -212,8 +211,7 @@ const StatusBadge: React.FC<{ status: SalesData["status"] }> = ({ status }) => {
         ? "Cancelado"
         : status === "completed"
         ? "Completo"
-        : "Pendente"
-     }
+        : "Pendente"}
     </span>
   );
 };

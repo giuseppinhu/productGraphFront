@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+
 import KpiCard from "../Dashboard/KpiCard/KpiCard";
 import ProductItem from "../Dashboard/ProductItem/ProductItem";
 import TableRow from "../TableRow/TableRow";
@@ -11,7 +12,9 @@ const socket = io("http://localhost:3000", {
 });
 
 const Content = () => {
-  const [data, setData]: any = useState({});
+  const [data, setData] = useState<DashboardData>({
+    data: {},
+  } as DashboardData);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -19,7 +22,7 @@ const Content = () => {
       fetch("http://localhost:3000/data/dashboard")
         .then((res) => res.json())
         .then((data) => {
-          setData(data);
+          setData(data as DashboardData);
           setLoading(false);
         })
         .catch((err) => {
@@ -36,9 +39,9 @@ const Content = () => {
     };
   }, []);
 
-  const dataDash = data?.data ?? {};
+  const { data: dashboardData } = data;
 
-  if (loading) {
+  if (loading || data === null) {
     return <div>Carregando...</div>;
   }
 
@@ -67,32 +70,32 @@ const Content = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <KpiCard
             title="Receita Total"
-            value={dataDash.sales.current.totalRevenue}
-            change={dataDash.sales.metrics.revenueGrowth.percentage}
-            isPositive={dataDash.sales.metrics.revenueGrowth.isPositive}
+            value={dashboardData.sales.current.totalRevenue}
+            change={dashboardData.sales.metrics.revenueGrowth.percentage}
+            isPositive={dashboardData.sales.metrics.revenueGrowth.isPositive}
             icon="💰"
             cash
           />
           <KpiCard
             title="Vendas"
-            value={dataDash.sales.current.totalSales}
-            change={dataDash.sales.metrics.salesGrowth.percentage}
-            isPositive={dataDash.sales.metrics.salesGrowth.isPositive}
+            value={dashboardData.sales.current.totalSales}
+            change={dashboardData.sales.metrics.salesGrowth.percentage}
+            isPositive={dashboardData.sales.metrics.salesGrowth.isPositive}
             icon="shopping_cart"
           />
           <KpiCard
             title="Ticket Médio"
-            value={dataDash.sales.metrics.ticketGrowth.value}
-            change={dataDash.sales.metrics.ticketGrowth.percentage}
-            isPositive={dataDash.sales.metrics.ticketGrowth.isPositive}
+            value={dashboardData.sales.metrics.ticketGrowth.value}
+            change={dashboardData.sales.metrics.ticketGrowth.percentage}
+            isPositive={dashboardData.sales.metrics.ticketGrowth.isPositive}
             icon="trending_up"
             cash
           />
           <KpiCard
             title="Novos Clientes"
-            value={dataDash.users_new.currentCount}
-            change={dataDash.users_new.percentage}
-            isPositive={dataDash.users_new.isPositive}
+            value={dashboardData.users_new.currentCount}
+            change={dashboardData.users_new.percentage}
+            isPositive={dashboardData.users_new.isPositive}
             icon="group"
           />
         </div>
@@ -105,7 +108,7 @@ const Content = () => {
               <span className="text-gray-400 text-sm">Atualizado há 2 min</span>
             </div>
             <div className="h-64 flex items-end justify-between gap-2 px-2">
-              <Graphic data={dataDash.graphData} />
+              <Graphic data={dashboardData.graphData} />
             </div>
           </div>
 
@@ -113,7 +116,7 @@ const Content = () => {
           <div className="bg-gray-900 rounded-xl border border-gray-800 p-6 shadow-sm">
             <h3 className="font-bold text-lg mb-4">Mais Vendidos</h3>
             <div className="space-y-4">
-              {dataDash.productSales.map((product: any) => {
+              {dashboardData.productSales.map((product: ProductSale) => {
                 return (
                   <ProductItem
                     key={product.name}
@@ -144,9 +147,9 @@ const Content = () => {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
-                {dataDash.salesLast.map((sale: any) => {
+                {dashboardData.salesLast.map((sale: RecentSale) => {
                   const value = Number(
-                    sale.totalPrice?.$numberDecimal ?? sale.totalPrice ?? 0,
+                    sale.totalPrice?.$numberDecimal ?? sale.totalPrice ?? 0
                   );
                   return (
                     <TableRow

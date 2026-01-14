@@ -1,7 +1,7 @@
 interface KpiCardProps {
   title: string;
   value: number;
-  change: string;
+  change: number;
   isPositive: boolean;
   icon: string;
   cash?: boolean;
@@ -28,15 +28,17 @@ const KpiCard = ({
           {icon === "trending_up"
             ? "📈"
             : icon === "group"
-              ? "👥"
-              : icon === "shopping_cart"
-                ? "🛒"
-                : "💰"}
+            ? "👥"
+            : icon === "shopping_cart"
+            ? "🛒"
+            : "💰"}
         </span>
       </div>
     </div>
     <div
-      className={`flex items-center text-xs font-medium ${isPositive ? "text-green-400" : "text-red-400"}`}
+      className={`flex items-center text-xs font-medium ${
+        isPositive ? "text-green-400" : "text-red-400"
+      }`}
     >
       <span className="mr-1">{isPositive ? "↑" : "↓"}</span>
       <span>{change + "%"}</span>

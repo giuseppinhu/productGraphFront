@@ -2,8 +2,8 @@ import formatPrice from "../../../utils/formatPrice";
 
 interface ProductItemProps {
   name: string;
-  sales: string;
-  price: number;
+  sales: number;
+  price: string;
 }
 
 const ProductItem = ({ name, sales, price }: ProductItemProps) => (
@@ -18,7 +18,7 @@ const ProductItem = ({ name, sales, price }: ProductItemProps) => (
       </div>
     </div>
     <span className="text-sm font-semibold text-white">
-      {formatPrice(price)}
+      {formatPrice(Number(price))}
     </span>
   </div>
 );

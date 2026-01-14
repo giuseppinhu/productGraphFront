@@ -2,13 +2,7 @@ import { Legend, Line, LineChart, Tooltip, XAxis, YAxis } from "recharts";
 import { RechartsDevtools } from "@recharts/devtools";
 
 interface Props {
-  data: [
-    {
-      quantity: number;
-      sales: number;
-      month: string;
-    },
-  ];
+  data: GraphData[];
 }
 
 const Graphic = ({ data }: Props) => {
