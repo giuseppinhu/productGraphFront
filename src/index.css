@@ -1,15 +1,15 @@
 @import "tailwindcss";
 
 * {
-   font-family: "Inter", sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 :root {
-  --bg-color: #0F1217; /* Tailwind's gray-800 */
-  --text-color: #AEB4BC; /* Tailwind's gray-50 */
-  --active-color: #1C2129; /* Tailwind's blue-500 */
+  --bg-color: #0f1217; /* Tailwind's gray-800 */
+  --text-color: #aeb4bc; /* Tailwind's gray-50 */
+  --active-color: #1c2129; /* Tailwind's blue-500 */
 }
 
 .bg-color {
-    background-color: var(--bg-color);
+  background-color: var(--bg-color);
 }

@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { useNavigate, Link } from 'react-router-dom';
+import React, { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
 
 const Login: React.FC = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login com:', { email, password });
-    
-    navigate('/dashboard');
+    console.log("Login com:", { email, password });
+
+    navigate("/dashboard");
   };
 
   return (
@@ -22,23 +22,35 @@ const Login: React.FC = () => {
       <div className="w-full max-w-md z-10">
         <div className="text-center mb-8">
           <Link to="/" className="inline-flex items-center gap-2 mb-4 group">
-            <div className="bg-blue-600 h-10 w-10 rounded-xl flex items-center justify-center font-bold text-white group-hover:scale-110 transition">D</div>
-            <span className="text-2xl font-bold text-white tracking-tight">DashSale</span>
+            <div className="bg-blue-600 h-10 w-10 rounded-xl flex items-center justify-center font-bold text-white group-hover:scale-110 transition">
+              D
+            </div>
+            <span className="text-2xl font-bold text-white tracking-tight">
+              DashSale
+            </span>
           </Link>
-          <h2 className="text-gray-400 text-sm italic">"O sucesso é a soma de pequenos esforços"</h2>
+          <h2 className="text-gray-400 text-sm italic">
+            "O sucesso é a soma de pequenos esforços"
+          </h2>
         </div>
         <div className="bg-gray-900/50 backdrop-blur-xl border border-gray-800 p-8 rounded-2xl shadow-2xl">
           <div className="mb-6">
-            <h1 className="text-2xl font-bold text-white">Bem-vindo de volta</h1>
-            <p className="text-gray-400 text-sm mt-1">Insira suas credenciais para acessar o painel.</p>
+            <h1 className="text-2xl font-bold text-white">
+              Bem-vindo de volta
+            </h1>
+            <p className="text-gray-400 text-sm mt-1">
+              Insira suas credenciais para acessar o painel.
+            </p>
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-5">
             <div>
-              <label className="block text-sm font-medium text-gray-300 mb-1.5">E-mail</label>
-              <input 
+              <label className="block text-sm font-medium text-gray-300 mb-1.5">
+                E-mail
+              </label>
+              <input
                 required
-                type="email" 
+                type="email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 placeholder="exemplo@dashsale.com"
@@ -48,12 +60,16 @@ const Login: React.FC = () => {
 
             <div>
               <div className="flex justify-between mb-1.5">
-                <label className="text-sm font-medium text-gray-300">Senha</label>
-                <a href="#" className="text-xs text-blue-400 hover:underline">Esqueceu a senha?</a>
+                <label className="text-sm font-medium text-gray-300">
+                  Senha
+                </label>
+                <a href="#" className="text-xs text-blue-400 hover:underline">
+                  Esqueceu a senha?
+                </a>
               </div>
-              <input 
+              <input
                 required
-                type="password" 
+                type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder="••••••••"
@@ -61,7 +77,7 @@ const Login: React.FC = () => {
               />
             </div>
 
-            <button 
+            <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98]"
             >
@@ -71,7 +87,10 @@ const Login: React.FC = () => {
 
           <div className="mt-8 pt-6 border-t border-gray-800 text-center">
             <p className="text-gray-400 text-sm">
-              Não tem uma conta? <a href="#" className="text-blue-400 font-medium hover:underline">Criar agora</a>
+              Não tem uma conta?{" "}
+              <a href="#" className="text-blue-400 font-medium hover:underline">
+                Criar agora
+              </a>
             </p>
           </div>
         </div>
