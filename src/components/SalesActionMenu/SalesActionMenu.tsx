@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 
-const SalesActionMenu: React.FC<{ saleId: string }> = ({ saleId }) => {
+const SalesActionMenu = ({ saleId }: { saleId: string }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 

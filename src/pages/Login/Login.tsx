@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 
-const Login: React.FC = () => {
+const Login = () => {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState<string>("");

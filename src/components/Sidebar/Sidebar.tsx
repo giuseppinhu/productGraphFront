@@ -1,52 +1,92 @@
+import React, { useEffect, useState } from 'react';
+import { NavLink, } from 'react-router-dom';
+
+  import { useLocation } from 'react-router-dom'
+
+// --- Interface de Itens do Menu ---
+interface NavItem {
+  label: string;
+  icon: string;
+  path: string;
+  active?: boolean;
+}
+
 const Sidebar = () => {
+  const [activeTab, setActiveTab] = useState('');
+
+  const loc = useLocation();
+  
+  useEffect(() => {
+    const currentPath = loc.pathname;
+    const currentItem = menuItems.find(item => item.path === currentPath);
+    if (currentItem) {
+      setActiveTab(currentItem.label);
+    }
+  }, [loc.pathname]);
+
+  const menuItems: NavItem[] = [
+    { label: 'Dashboard', icon: '📊', path: '/dashboard' },
+    { label: 'Vendas', icon: '💰', path: '/sales' },
+    { label: 'Clientes', icon: '👥', path: '/clientes' },
+    { label: 'Produtos', icon: '📦', path: '/produtos' },
+    { label: 'Configurações', icon: '⚙️', path: '/config' },
+  ];
+
   return (
-    <aside className="h-screen w-64 bg-gray-900 text-white border-r-3 border-r-gray-400 p-4 flex flex-col">
-      <div className="mb-8 mt-3">
-        <img
-          src="https://placehold.co/100x100"
-          alt="Image User"
-          className="rounded-full block m-auto"
-        />
-        <span className="block text-nowrap text-center font-bold mt-2">
-          Name User
-        </span>
-        <span className="block text-nowrap text-center text-sm text-gray-400">
-          email@email.com
-        </span>
+    <aside className="h-screen bg-gray-950 border-r border-gray-900 flex flex-col left-0 top-0">
+      {/* Logo / Branding */}
+      <div className="p-8">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white">
+            D
+          </div>
+          <span className="text-xl font-bold text-white tracking-tight">DashSale</span>
+        </div>
       </div>
 
-      <nav className="flex flex-col justify-between flex-1">
-        <ul className="space-y-4">
-          <li className="bg-gray-700 hover:bg-gray-600 h-10 rounded-md flex items-center justify-center transition-colors">
-            <a href="#" className="w-full text-center">
-              📊 Dashboard
-            </a>
-          </li>
-          <li className="bg-gray-700 hover:bg-gray-600 h-10 rounded-md flex items-center justify-center transition-colors">
-            <a href="#" className="w-full text-center">
-              📦 Produtos
-            </a>
-          </li>
-          <li className="bg-gray-700 hover:bg-gray-600 h-10 rounded-md flex items-center justify-center transition-colors">
-            <a href="/sales" className="w-full text-center">
-              🧾 Vendas
-            </a>
-          </li>
-          <li className="bg-gray-700 hover:bg-gray-600 h-10 rounded-md flex items-center justify-center transition-colors">
-            <a href="#" className="w-full text-center">
-              👥 Clientes
-            </a>
-          </li>
-        </ul>
-
-        <ul>
-          <li className="bg-gray-700 hover:bg-gray-600 h-10 rounded-md flex items-center justify-center transition-colors">
-            <a href="#" className="w-full text-center">
-              ⚙️ Configurações
-            </a>
-          </li>
-        </ul>
+      {/* Navegação */}
+      <nav className="flex-1 px-4 space-y-1 w-65">
+        {menuItems.map((item) => (
+          <NavLink
+            key={item.label}
+            to={item.path}
+            onClick={() => setActiveTab(item.label)}
+            className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 group ${
+              activeTab === item.label
+                ? 'bg-blue-600/10 text-blue-500'
+                : 'text-gray-400 hover:bg-gray-900 hover:text-gray-200'
+            }`}
+          >
+            <span className={`text-xl transition-transform duration-200 group-hover:scale-110 ${
+              activeTab === item.label ? 'opacity-100' : 'opacity-70'
+            }`}>
+              {item.icon}
+            </span>
+            <span className="font-medium text-sm">{item.label}</span>
+            
+            {/* Indicador Ativo */}
+            {activeTab === item.label && (
+              <div className="ml-auto w-1.5 h-1.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
+            )}
+          </NavLink> 
+        ))}
       </nav>
+
+      {/* Perfil / Footer */}
+      <div className="p-4 border-t border-gray-900">
+        <button className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-gray-900 transition-colors">
+          <img 
+            src="https://github.com/identicons/johndoe.png" 
+            alt="User" 
+            className="w-10 h-10 rounded-full border border-gray-800"
+          />
+          <div className="text-left">
+            <p className="text-sm font-semibold text-white">Seu Nome</p>
+            <p className="text-xs text-gray-500">Admin</p>
+          </div>
+          <span className="ml-auto text-gray-600 text-xs">🚪</span>
+        </button>
+      </div>
     </aside>
   );
 };

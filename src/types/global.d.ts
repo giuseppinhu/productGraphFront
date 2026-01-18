@@ -69,6 +69,8 @@ declare global {
 
   interface Sale {
     sales: SalesData[];
+    next: boolean;
+    totalPages: number;
     budges: Budges;
     AUR: number;
   }

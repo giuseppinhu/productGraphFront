@@ -1,20 +1,24 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
-import Sidebar from "../../components/Sidebar/Sidebar";
 import SalesActionMenu from "../../components/SalesActionMenu/SalesActionMenu";
 
 import formatPrice from "../../utils/formatPrice";
 import { subString } from "../../utils/sliceString";
 import { getDate } from "../../utils/formatData";
 
-import { ToastContainer, toast } from "react-toastify";
+import ModernSalesSkeleton from "../../components/Loader/Loader";
+import Sidebar from "../../components/Sidebar/Sidebar";
 
 const Sales = () => {
+  const [page, setPage] = useState(1);
   const [searchTerm, setSearchTerm] = useState<string>("");
   const [data, setData] = useState<Sale>({
     sales: [],
     budges: { totalRevenue: 0, quantity: 0 },
     AUR: 0,
+    totalPages: 0,
+    next: false
   });
   const [loading, setLoading] = useState(true);
 
@@ -24,7 +28,7 @@ const Sales = () => {
   };
 
   useEffect(() => {
-    fetch("http://localhost:3000/data/sales")
+    fetch(`http://localhost:3000/data/sales?page=${page}`)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -33,7 +37,7 @@ const Sales = () => {
       .catch((err) => {
         console.error("Erro ao buscar as vendas", err);
       });
-  }, []);
+  }, [page]);
 
   const filteredSales = data.sales.filter(
     (sale: SalesData) =>
@@ -43,16 +47,18 @@ const Sales = () => {
       sale.status.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+
   if (loading) {
-    return <div>Loading...</div>;
+    return <ModernSalesSkeleton />;
   }
 
   return (
-    <div className="flex">
+    <div className="w-screen min-h-screen flex">
       <Sidebar />
-      <div className="p-6 md:p-10 bg-gray-950 min-h-screen text-white d-flex w-screen">
+      
+      <div className="p-10 bg-gray-950 text-white w-full min-h-screen">
         {/* Header da Página */}
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
+        <div className="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
           <div>
             <h1 className="text-3xl font-bold tracking-tight">Vendas</h1>
             <p className="text-gray-400">
@@ -178,25 +184,25 @@ const Sales = () => {
 
           {/* Paginação Simples */}
           <div className="p-4 border-t border-gray-800 flex items-center justify-between text-gray-400 text-xs">
-            <span>Mostrando 3 de 150 vendas</span>
+            <span>Mostrando {filteredSales?.length || 0} de {data.sales.length || 0} vendas</span>
             <div className="flex gap-2">
-              <button className="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 disabled:opacity-50">
+              <button onClick={() => setPage(page - 1)} className="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 disabled:opacity-50" disabled={page === 1}>
                 Anterior
               </button>
-              <button className="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700">
+              <button onClick={() => setPage(page + 1)} className="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 disabled:opacity-50" disabled={!data.next}>
                 Próximo
               </button>
             </div>
           </div>
         </div>
-        <ToastContainer />
       </div>
+      <ToastContainer /> 
     </div>
   );
 };
 
 // --- Componente de Badge Tipado ---
-const StatusBadge: React.FC<{ status: SalesData["status"] }> = ({ status }) => {
+const StatusBadge = ({ status }: { status: SalesData["status"]}) => {
   const styles = {
     completed: "bg-green-500/10 text-green-400 border-green-500/20",
     pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",

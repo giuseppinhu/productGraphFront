@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Home: React.FC = () => {
+const Home = () => {
   return (
     <div className="min-h-screen bg-gray-950 text-white font-sans selection:bg-blue-500/30">
       {/* --- NAVBAR --- */}
@@ -128,11 +128,7 @@ interface FeatureCardProps {
   description: string;
 }
 
-const FeatureCard: React.FC<FeatureCardProps> = ({
-  icon,
-  title,
-  description,
-}) => (
+const FeatureCard = ({icon, title, description}: FeatureCardProps ) => (
   <div className="p-8 rounded-2xl bg-gray-900 border border-gray-800 hover:border-blue-500/50 transition duration-300">
     <div className="text-4xl mb-6">{icon}</div>
     <h3 className="text-xl font-bold mb-3">{title}</h3>

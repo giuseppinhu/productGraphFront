@@ -6,6 +6,7 @@ import TableRow from "../TableRow/TableRow";
 import Graphic from "../Dashboard/Graphic/Graphic";
 
 import { io } from "socket.io-client";
+import ModernSalesSkeleton from "../Loader/Loader";
 
 const socket = io("http://localhost:3000", {
   transports: ["websocket"],
@@ -42,11 +43,11 @@ const Content = () => {
   const { data: dashboardData } = data;
 
   if (loading || data === null) {
-    return <div>Carregando...</div>;
+    return <ModernSalesSkeleton />;
   }
 
   return (
-    <div className="flex h-screen w-full bg-gray-950 text-white font-sans">
+    <div className="flex h-screen w-screen bg-gray-950 text-white font-sans">
       <main className="flex-1 overflow-y-auto bg-gray-950 p-4 md:p-8">
         <header className="flex flex-col md:flex-row justify-between items-start md:items-center mb-8 gap-4">
           <div>
