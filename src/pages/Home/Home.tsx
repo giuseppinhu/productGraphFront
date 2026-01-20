@@ -1,9 +1,8 @@
-import React from "react";
 import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="min-h-screen bg-gray-950 text-white font-sans selection:bg-blue-500/30">
+    <div className="min-h-screen w-screen bg-gray-950 text-white font-sans selection:bg-blue-500/30">
       {/* --- NAVBAR --- */}
       <nav className="flex items-center justify-between px-6 py-6 md:px-12 border-b border-gray-900 bg-gray-950/50 backdrop-blur-md sticky top-0 z-50">
         <div className="flex items-center gap-2">

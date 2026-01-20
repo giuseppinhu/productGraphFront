@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 
-const SalesActionMenu = ({ saleId }: { saleId: string }) => {
+const ActionMenu = ({ id, url, onClick }: { id: string, url: string, onClick: () => void}) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -15,8 +15,8 @@ const SalesActionMenu = ({ saleId }: { saleId: string }) => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
-  const deleteSale = (id: string) => {
-    fetch(`http://localhost:3000/sale`, {
+  const deleteAction = (id: string, url: string) => {
+    fetch(`${url}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
@@ -24,7 +24,7 @@ const SalesActionMenu = ({ saleId }: { saleId: string }) => {
       body: JSON.stringify({ id }),
     }).then((res) => {
       if (res.ok) {
-        toast.success("Venda excluída com sucesso!");
+        toast.success("Excluído com sucesso!");
         window.location.reload();
       }
     });
@@ -53,8 +53,8 @@ const SalesActionMenu = ({ saleId }: { saleId: string }) => {
 
           <button
             onClick={() => {
-              console.log("Ver", saleId);
               setIsOpen(false);
+              onClick()
             }}
             className="w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-blue-600 hover:text-white transition-colors flex items-center gap-3"
           >
@@ -63,8 +63,8 @@ const SalesActionMenu = ({ saleId }: { saleId: string }) => {
 
           <button
             onClick={() => {
-              console.log("Editar", saleId);
               setIsOpen(false);
+              onClick()
             }}
             className="w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 transition-colors flex items-center gap-3"
           >
@@ -75,17 +75,15 @@ const SalesActionMenu = ({ saleId }: { saleId: string }) => {
 
           <button
             onClick={() => {
-              deleteSale(saleId);
+              deleteAction(id, url);
               setIsOpen(false);
             }}
             className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-red-950/30 transition-colors flex items-center gap-3"
           >
-            <span>🗑️</span> Excluir Venda
-          </button>
+            <span>🗑️</span> Excluir </button>
         </div>
       )}
     </div>
   );
 };
-
-export default SalesActionMenu;
+export default ActionMenu;

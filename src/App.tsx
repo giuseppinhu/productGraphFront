@@ -5,7 +5,7 @@ import DashboardLayout from "./pages/Dashboard/Dashboard";
 import Home from "./pages/Home/Home";
 import Login from "./pages/Login/Login";
 import Sales from "./pages/Sales/Sales";
-import Sidebar from "./components/Sidebar/Sidebar";
+import ClientsPage from "./pages/Users/Users";
 
 function App() {
   return (
@@ -20,6 +20,8 @@ function App() {
 
             <Route path="/sales" element={<Sales />} />
      
+            <Route path="/users" element={<ClientsPage />} />
+
             <Route path="*" element={<h1>Página não encontrada</h1>} />
           </Routes>
         </div>

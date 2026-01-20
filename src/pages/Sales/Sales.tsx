@@ -1,23 +1,23 @@
 import { useEffect, useState } from "react";
 import { ToastContainer, toast } from "react-toastify";
 
-import SalesActionMenu from "../../components/SalesActionMenu/SalesActionMenu";
-
 import formatPrice from "../../utils/formatPrice";
 import { subString } from "../../utils/sliceString";
 import { getDate } from "../../utils/formatData";
 
 import ModernSalesSkeleton from "../../components/Loader/Loader";
 import Sidebar from "../../components/Sidebar/Sidebar";
-
+import StatusBadge from "../../components/StatusBadge/StatusBadge";
 const Sales = () => {
   const [page, setPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [status, setStatus] = useState<string>('');
   const [data, setData] = useState<Sale>({
     sales: [],
     budges: { totalRevenue: 0, quantity: 0 },
     AUR: 0,
     totalPages: 0,
+    total: 0,
     next: false
   });
   const [loading, setLoading] = useState(true);
@@ -27,8 +27,8 @@ const Sales = () => {
     toast.info("ID copiado para a área de transferência!");
   };
 
-  useEffect(() => {
-    fetch(`http://localhost:3000/data/sales?page=${page}`)
+  useEffect(() => { 
+    fetch(`http://localhost:3000/data/sales?page=${page}&search=${searchTerm}&status=${status}`,)
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -37,16 +37,7 @@ const Sales = () => {
       .catch((err) => {
         console.error("Erro ao buscar as vendas", err);
       });
-  }, [page]);
-
-  const filteredSales = data.sales.filter(
-    (sale: SalesData) =>
-      sale.client.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      sale.product.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      sale.id.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      sale.status.toLowerCase().includes(searchTerm.toLowerCase())
-  );
-
+  }, [page, searchTerm, status]);
 
   if (loading) {
     return <ModernSalesSkeleton />;
@@ -65,7 +56,7 @@ const Sales = () => {
               Gerencie e monitore todas as transações da sua conta.
             </p>
           </div>
-          <button className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-lg font-medium transition-all shadow-lg shadow-blue-500/20">
+          <button className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-lg font-medium transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50" disabled>
             Exportar Relatório (CSV)
           </button>
         </div>
@@ -108,7 +99,7 @@ const Sales = () => {
             <div className="flex gap-2">
               <select
                 className="bg-gray-950 border border-gray-700 text-sm rounded-lg px-3 py-2 outline-none"
-                onChange={(e) => setSearchTerm(e.target.value)}
+                onChange={(e) => setStatus(e.target.value)}
               >
                 <option value={" "}>Todos os produtos</option>
                 <option value={"completed"}>Completo</option>
@@ -129,54 +120,52 @@ const Sales = () => {
                   <th className="px-6 py-4">Data</th>
                   <th className="px-6 py-4">Valor</th>
                   <th className="px-6 py-4">Status</th>
-                  <th className="px-6 py-4 text-center">Ações</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
-                {(filteredSales || []).map((sale: SalesData) => (
-                  <tr
-                    key={sale.id}
-                    className="hover:bg-gray-800/30 transition-colors"
-                  >
-                    <td className="px-6 py-4 font-mono text-blue-400">
-                      <span
-                        className="flex items-center gap-2"
-                        onClick={() => pasteId(sale.id)}
-                        style={{ cursor: "pointer" }}
-                      >
-                        #{subString(sale.id)}
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          id="Layer_1"
-                          height="20"
-                          viewBox="0 0 24 24"
-                          width="20"
-                          data-name="Layer 1"
-                          fill="oklch(70.7% 0.165 254.624)"
+                {(data.sales || []).map((sale: SalesData) => (
+                  <>
+                    <tr
+                      key={sale._id}
+                      className="hover:bg-gray-800/30 transition-colors"
+                    >
+                      <td className="px-6 py-4 font-mono text-blue-400">
+                        <span
+                          className="flex items-center gap-2"
+                          onClick={() => pasteId(sale._id)}
+                          style={{ cursor: "pointer" }}
                         >
-                          <path d="m13 20a5.006 5.006 0 0 0 5-5v-8.757a3.972 3.972 0 0 0 -1.172-2.829l-2.242-2.242a3.972 3.972 0 0 0 -2.829-1.172h-4.757a5.006 5.006 0 0 0 -5 5v10a5.006 5.006 0 0 0 5 5zm-9-5v-10a3 3 0 0 1 3-3s4.919.014 5 .024v1.976a2 2 0 0 0 2 2h1.976c.01.081.024 9 .024 9a3 3 0 0 1 -3 3h-6a3 3 0 0 1 -3-3zm18-7v11a5.006 5.006 0 0 1 -5 5h-9a1 1 0 0 1 0-2h9a3 3 0 0 0 3-3v-11a1 1 0 0 1 2 0z" />
-                        </svg>
-                      </span>
-                    </td>
-                    <td className="px-6 py-4">
-                      <div className="font-medium text-white">
-                        {sale.client}
-                      </div>
-                    </td>
-                    <td className="px-6 py-4 text-gray-300">{sale.product}</td>
-                    <td className="px-6 py-4 text-gray-400">
-                      {getDate(sale.saleDate)}
-                    </td>
-                    <td className="px-6 py-4 font-semibold">
-                      {formatPrice(sale.totalPrice)}
-                    </td>
-                    <td className="px-6 py-4">
-                      <StatusBadge status={sale.status} />
-                    </td>
-                    <td className="px-6 py-4 text-center">
-                      <SalesActionMenu saleId={sale.id} />
-                    </td>
-                  </tr>
+                          #{subString(sale._id)}
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            id="Layer_1"
+                            height="20"
+                            viewBox="0 0 24 24"
+                            width="20"
+                            data-name="Layer 1"
+                            fill="oklch(70.7% 0.165 254.624)"
+                          >
+                            <path d="m13 20a5.006 5.006 0 0 0 5-5v-8.757a3.972 3.972 0 0 0 -1.172-2.829l-2.242-2.242a3.972 3.972 0 0 0 -2.829-1.172h-4.757a5.006 5.006 0 0 0 -5 5v10a5.006 5.006 0 0 0 5 5zm-9-5v-10a3 3 0 0 1 3-3s4.919.014 5 .024v1.976a2 2 0 0 0 2 2h1.976c.01.081.024 9 .024 9a3 3 0 0 1 -3 3h-6a3 3 0 0 1 -3-3zm18-7v11a5.006 5.006 0 0 1 -5 5h-9a1 1 0 0 1 0-2h9a3 3 0 0 0 3-3v-11a1 1 0 0 1 2 0z" />
+                          </svg>
+                        </span>
+                      </td>
+                      <td className="px-6 py-4">
+                        <div className="font-medium text-white">
+                          {sale.clientData.name}
+                        </div>
+                      </td>
+                      <td className="px-6 py-4 text-gray-300">{sale.productData.name}</td>
+                      <td className="px-6 py-4 text-gray-400">
+                        {getDate(sale.saleDate)}
+                      </td>
+                      <td className="px-6 py-4 font-semibold">
+                        {formatPrice(sale.totalPrice)}
+                      </td>
+                      <td className="px-6 py-4">
+                        <StatusBadge status={sale.status} />
+                      </td>
+                    </tr>
+                  </>
                 ))}
               </tbody>
             </table>
@@ -184,7 +173,7 @@ const Sales = () => {
 
           {/* Paginação Simples */}
           <div className="p-4 border-t border-gray-800 flex items-center justify-between text-gray-400 text-xs">
-            <span>Mostrando {filteredSales?.length || 0} de {data.sales.length || 0} vendas</span>
+            <span>Mostrando {data.sales?.length || 0} de {data.total || 0} vendas</span>
             <div className="flex gap-2">
               <button onClick={() => setPage(page - 1)} className="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 disabled:opacity-50" disabled={page === 1}>
                 Anterior
@@ -198,27 +187,6 @@ const Sales = () => {
       </div>
       <ToastContainer /> 
     </div>
-  );
-};
-
-// --- Componente de Badge Tipado ---
-const StatusBadge = ({ status }: { status: SalesData["status"]}) => {
-  const styles = {
-    completed: "bg-green-500/10 text-green-400 border-green-500/20",
-    pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
-    canceled: "bg-red-500/10 text-red-400 border-red-500/20",
-  };
-
-  return (
-    <span
-      className={`px-2.5 py-0.5 rounded-full border text-[11px] font-bold uppercase tracking-wider ${styles[status]}`}
-    >
-      {status === "canceled"
-        ? "Cancelado"
-        : status === "completed"
-        ? "Completo"
-        : "Pendente"}
-    </span>
   );
 };
 

@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavLink, } from 'react-router-dom';
 
-  import { useLocation } from 'react-router-dom'
+import { useLocation } from 'react-router-dom'
 
 // --- Interface de Itens do Menu ---
 interface NavItem {
@@ -27,13 +27,13 @@ const Sidebar = () => {
   const menuItems: NavItem[] = [
     { label: 'Dashboard', icon: '📊', path: '/dashboard' },
     { label: 'Vendas', icon: '💰', path: '/sales' },
-    { label: 'Clientes', icon: '👥', path: '/clientes' },
+    { label: 'Clientes', icon: '👥', path: '/users' },
     { label: 'Produtos', icon: '📦', path: '/produtos' },
     { label: 'Configurações', icon: '⚙️', path: '/config' },
   ];
 
   return (
-    <aside className="h-screen bg-gray-950 border-r border-gray-900 flex flex-col left-0 top-0">
+    <aside className="min-h-screen bg-gray-950 border-r border-gray-900 flex flex-col left-0 top-0">
       {/* Logo / Branding */}
       <div className="p-8">
         <div className="flex items-center gap-3">

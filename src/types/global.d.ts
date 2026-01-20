@@ -73,12 +73,13 @@ declare global {
     totalPages: number;
     budges: Budges;
     AUR: number;
+    total: number;
   }
 
   interface SalesData {
-    id: string;
-    product: string;
-    client: string;
+    _id: string;
+    productData: { name: string };
+    clientData: { name: string };
     totalPrice: number;
     saleDate: string;
     status: "pending" | "completed" | "canceled";
