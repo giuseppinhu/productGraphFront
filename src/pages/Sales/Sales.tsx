@@ -6,19 +6,19 @@ import { subString } from "../../utils/sliceString";
 import { getDate } from "../../utils/formatData";
 
 import ModernSalesSkeleton from "../../components/Loader/Loader";
-import Sidebar from "../../components/Sidebar/Sidebar";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
+
 const Sales = () => {
   const [page, setPage] = useState(1);
-  const [searchTerm, setSearchTerm] = useState<string>('');
-  const [status, setStatus] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [status, setStatus] = useState<string>("");
   const [data, setData] = useState<Sale>({
     sales: [],
     budges: { totalRevenue: 0, quantity: 0 },
     AUR: 0,
     totalPages: 0,
     total: 0,
-    next: false
+    next: false,
   });
   const [loading, setLoading] = useState(true);
 
@@ -27,8 +27,10 @@ const Sales = () => {
     toast.info("ID copiado para a área de transferência!");
   };
 
-  useEffect(() => { 
-    fetch(`http://localhost:3000/data/sales?page=${page}&search=${searchTerm}&status=${status}`,)
+  useEffect(() => {
+    fetch(
+      `http://localhost:3000/data/sales?page=${page}&search=${searchTerm}&status=${status}`,
+    )
       .then((res) => res.json())
       .then((data) => {
         setData(data);
@@ -44,9 +46,7 @@ const Sales = () => {
   }
 
   return (
-    <div className="w-screen min-h-screen flex">
-      <Sidebar />
-      
+    <>
       <div className="p-10 bg-gray-950 text-white w-full min-h-screen">
         {/* Header da Página */}
         <div className="flex flex-col md:flex-row justify-between md:items-center mb-8 gap-4">
@@ -56,7 +56,10 @@ const Sales = () => {
               Gerencie e monitore todas as transações da sua conta.
             </p>
           </div>
-          <button className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-lg font-medium transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50" disabled>
+          <button
+            className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2.5 rounded-lg font-medium transition-all shadow-lg shadow-blue-500/20 disabled:opacity-50"
+            disabled
+          >
             Exportar Relatório (CSV)
           </button>
         </div>
@@ -154,7 +157,9 @@ const Sales = () => {
                           {sale.clientData.name}
                         </div>
                       </td>
-                      <td className="px-6 py-4 text-gray-300">{sale.productData.name}</td>
+                      <td className="px-6 py-4 text-gray-300">
+                        {sale.productData.name}
+                      </td>
                       <td className="px-6 py-4 text-gray-400">
                         {getDate(sale.saleDate)}
                       </td>
@@ -173,20 +178,30 @@ const Sales = () => {
 
           {/* Paginação Simples */}
           <div className="p-4 border-t border-gray-800 flex items-center justify-between text-gray-400 text-xs">
-            <span>Mostrando {data.sales?.length || 0} de {data.total || 0} vendas</span>
+            <span>
+              Mostrando {data.sales?.length || 0} de {data.total || 0} vendas
+            </span>
             <div className="flex gap-2">
-              <button onClick={() => setPage(page - 1)} className="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 disabled:opacity-50" disabled={page === 1}>
+              <button
+                onClick={() => setPage(page - 1)}
+                className="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 disabled:opacity-50"
+                disabled={page === 1}
+              >
                 Anterior
               </button>
-              <button onClick={() => setPage(page + 1)} className="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 disabled:opacity-50" disabled={!data.next}>
+              <button
+                onClick={() => setPage(page + 1)}
+                className="px-3 py-1 bg-gray-800 rounded hover:bg-gray-700 disabled:opacity-50"
+                disabled={!data.next}
+              >
                 Próximo
               </button>
             </div>
           </div>
         </div>
       </div>
-      <ToastContainer /> 
-    </div>
+      <ToastContainer />
+    </>
   );
 };
 

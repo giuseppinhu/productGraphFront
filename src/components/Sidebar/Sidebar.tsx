@@ -1,35 +1,27 @@
-import { useEffect, useState } from 'react';
-import { NavLink, } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 
-import { useLocation } from 'react-router-dom'
-
-// --- Interface de Itens do Menu ---
-interface NavItem {
-  label: string;
-  icon: string;
-  path: string;
-  active?: boolean;
-}
+import { useLocation } from "react-router-dom";
 
 const Sidebar = () => {
-  const [activeTab, setActiveTab] = useState('');
+  const [activeTab, setActiveTab] = useState("");
 
   const loc = useLocation();
-  
+
   useEffect(() => {
     const currentPath = loc.pathname;
-    const currentItem = menuItems.find(item => item.path === currentPath);
+    const currentItem = menuItems.find((item) => item.path === currentPath);
     if (currentItem) {
       setActiveTab(currentItem.label);
     }
   }, [loc.pathname]);
 
   const menuItems: NavItem[] = [
-    { label: 'Dashboard', icon: '📊', path: '/dashboard' },
-    { label: 'Vendas', icon: '💰', path: '/sales' },
-    { label: 'Clientes', icon: '👥', path: '/users' },
-    { label: 'Produtos', icon: '📦', path: '/produtos' },
-    { label: 'Configurações', icon: '⚙️', path: '/config' },
+    { label: "Dashboard", icon: "📊", path: "/dashboard" },
+    { label: "Vendas", icon: "💰", path: "/sales" },
+    { label: "Clientes", icon: "👥", path: "/users" },
+    { label: "Produtos", icon: "📦", path: "/produtos" },
+    { label: "Configurações", icon: "⚙️", path: "/config" },
   ];
 
   return (
@@ -40,7 +32,9 @@ const Sidebar = () => {
           <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center font-bold text-white">
             D
           </div>
-          <span className="text-xl font-bold text-white tracking-tight">DashSale</span>
+          <span className="text-xl font-bold text-white tracking-tight">
+            DashSale
+          </span>
         </div>
       </div>
 
@@ -53,31 +47,33 @@ const Sidebar = () => {
             onClick={() => setActiveTab(item.label)}
             className={`w-full flex items-center gap-4 px-4 py-3 rounded-xl transition-all duration-200 group ${
               activeTab === item.label
-                ? 'bg-blue-600/10 text-blue-500'
-                : 'text-gray-400 hover:bg-gray-900 hover:text-gray-200'
+                ? "bg-blue-600/10 text-blue-500"
+                : "text-gray-400 hover:bg-gray-900 hover:text-gray-200"
             }`}
           >
-            <span className={`text-xl transition-transform duration-200 group-hover:scale-110 ${
-              activeTab === item.label ? 'opacity-100' : 'opacity-70'
-            }`}>
+            <span
+              className={`text-xl transition-transform duration-200 group-hover:scale-110 ${
+                activeTab === item.label ? "opacity-100" : "opacity-70"
+              }`}
+            >
               {item.icon}
             </span>
             <span className="font-medium text-sm">{item.label}</span>
-            
+
             {/* Indicador Ativo */}
             {activeTab === item.label && (
               <div className="ml-auto w-1.5 h-1.5 bg-blue-500 rounded-full shadow-[0_0_8px_rgba(59,130,246,0.5)]" />
             )}
-          </NavLink> 
+          </NavLink>
         ))}
       </nav>
 
       {/* Perfil / Footer */}
       <div className="p-4 border-t border-gray-900">
         <button className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-gray-900 transition-colors">
-          <img 
-            src="https://github.com/identicons/johndoe.png" 
-            alt="User" 
+          <img
+            src="https://res.cloudinary.com/dhn5ceymi/image/upload/v1768948550/avatars/avatar_admin.png"
+            alt="User_Image"
             className="w-10 h-10 rounded-full border border-gray-800"
           />
           <div className="text-left">

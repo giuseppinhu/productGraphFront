@@ -1,4 +1,4 @@
-const StatusBadge = ({ status }: { status: SalesData["status"]}) => {
+const StatusBadge = ({ status }: { status: SalesData["status"] }) => {
   const styles = {
     completed: "bg-green-500/10 text-green-400 border-green-500/20",
     pending: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
@@ -12,8 +12,8 @@ const StatusBadge = ({ status }: { status: SalesData["status"]}) => {
       {status === "canceled"
         ? "Cancelado"
         : status === "completed"
-        ? "Completo"
-        : "Pendente"}
+          ? "Completo"
+          : "Pendente"}
     </span>
   );
 };

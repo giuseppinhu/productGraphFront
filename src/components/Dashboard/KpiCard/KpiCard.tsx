@@ -28,10 +28,10 @@ const KpiCard = ({
           {icon === "trending_up"
             ? "📈"
             : icon === "group"
-            ? "👥"
-            : icon === "shopping_cart"
-            ? "🛒"
-            : "💰"}
+              ? "👥"
+              : icon === "shopping_cart"
+                ? "🛒"
+                : "💰"}
         </span>
       </div>
     </div>

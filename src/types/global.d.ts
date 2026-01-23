@@ -1,7 +1,6 @@
 export {};
 
 declare global {
-  // 1. Tipos Utilitários para a estrutura do MongoDB/API
   interface MongoDecimal {
     $numberDecimal: string;
   }
@@ -12,7 +11,13 @@ declare global {
     sales: number;
   }
 
-  // 2. Sub-interfaces para organização
+  interface NavItem {
+    label: string;
+    icon: string;
+    path: string;
+    active?: boolean;
+  }
+
   interface UserMetrics {
     currentCount: number;
     previousCount: number;
@@ -46,7 +51,6 @@ declare global {
     sales: number;
   }
 
-  // 3. Interface Principal do Estado
   export interface DashboardData {
     data: {
       users_new: UserMetrics;
@@ -88,5 +92,28 @@ declare global {
   interface Budges {
     totalRevenue: number;
     quantity: number;
+  }
+
+  interface DataPage {
+    data: {
+      totalNew: number;
+      dataUsers: DataUsers;
+    };
+  }
+
+  interface DataUsers {
+    users: User[];
+    totalUsers: number;
+    totalPages: number;
+    next: boolean;
+  }
+
+  interface User {
+    _id: string;
+    name: string;
+    email: string;
+    role: number;
+    avatar_url: string;
+    created_at: string;
   }
 }

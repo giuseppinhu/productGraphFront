@@ -127,7 +127,7 @@ interface FeatureCardProps {
   description: string;
 }
 
-const FeatureCard = ({icon, title, description}: FeatureCardProps ) => (
+const FeatureCard = ({ icon, title, description }: FeatureCardProps) => (
   <div className="p-8 rounded-2xl bg-gray-900 border border-gray-800 hover:border-blue-500/50 transition duration-300">
     <div className="text-4xl mb-6">{icon}</div>
     <h3 className="text-xl font-bold mb-3">{title}</h3>

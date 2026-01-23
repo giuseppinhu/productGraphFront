@@ -150,7 +150,7 @@ const Content = () => {
               <tbody className="divide-y divide-gray-800">
                 {dashboardData.salesLast.map((sale: RecentSale) => {
                   const value = Number(
-                    sale.totalPrice?.$numberDecimal ?? sale.totalPrice ?? 0
+                    sale.totalPrice?.$numberDecimal ?? sale.totalPrice ?? 0,
                   );
                   return (
                     <TableRow

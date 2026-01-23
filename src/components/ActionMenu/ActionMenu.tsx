@@ -1,7 +1,17 @@
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 
-const ActionMenu = ({ id, url, onClick }: { id: string, url: string, onClick: () => void}) => {
+const ActionMenu = ({
+  id,
+  url,
+  onClick,
+  onClickEdit,
+}: {
+  id: string;
+  url: string;
+  onClick: () => void;
+  onClickEdit: () => void;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -54,7 +64,7 @@ const ActionMenu = ({ id, url, onClick }: { id: string, url: string, onClick: ()
           <button
             onClick={() => {
               setIsOpen(false);
-              onClick()
+              onClick();
             }}
             className="w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-blue-600 hover:text-white transition-colors flex items-center gap-3"
           >
@@ -64,7 +74,7 @@ const ActionMenu = ({ id, url, onClick }: { id: string, url: string, onClick: ()
           <button
             onClick={() => {
               setIsOpen(false);
-              onClick()
+              onClickEdit();
             }}
             className="w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-gray-800 transition-colors flex items-center gap-3"
           >
@@ -80,7 +90,8 @@ const ActionMenu = ({ id, url, onClick }: { id: string, url: string, onClick: ()
             }}
             className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-red-950/30 transition-colors flex items-center gap-3"
           >
-            <span>🗑️</span> Excluir </button>
+            <span>🗑️</span> Excluir{" "}
+          </button>
         </div>
       )}
     </div>
