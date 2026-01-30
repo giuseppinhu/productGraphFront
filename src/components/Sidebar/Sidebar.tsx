@@ -1,3 +1,4 @@
+import { DoorOpen } from "lucide-react";
 import { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 
@@ -19,8 +20,8 @@ const Sidebar = () => {
   const menuItems: NavItem[] = [
     { label: "Dashboard", icon: "📊", path: "/dashboard" },
     { label: "Vendas", icon: "💰", path: "/sales" },
-    { label: "Clientes", icon: "👥", path: "/users" },
-    { label: "Produtos", icon: "📦", path: "/produtos" },
+    { label: "Produtos", icon: "📦", path: "/products" },
+    { label: "Usuários", icon: "👥", path: "/users" },
     { label: "Configurações", icon: "⚙️", path: "/config" },
   ];
 
@@ -80,7 +81,9 @@ const Sidebar = () => {
             <p className="text-sm font-semibold text-white">Seu Nome</p>
             <p className="text-xs text-gray-500">Admin</p>
           </div>
-          <span className="ml-auto text-gray-600 text-xs">🚪</span>
+          <span className="ml-auto text-gray-600 text-xs cursor-pointer" onClick={() => console.log("adads")}>
+            <DoorOpen className="text-red-400 hover:text-red-800"/>
+          </span>
         </button>
       </div>
     </aside>

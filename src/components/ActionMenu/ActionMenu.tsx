@@ -1,16 +1,18 @@
+import axios from "axios";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "react-toastify";
 
 const ActionMenu = ({
   id,
-  url,
-  onClick,
+  onClickView,
   onClickEdit,
+  onClickDelete,
 }: {
   id: string;
   url: string;
-  onClick: () => void;
+  onClickView: () => void;
   onClickEdit: () => void;
+  onClickDelete: () => void;
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
@@ -24,21 +26,6 @@ const ActionMenu = ({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
-  const deleteAction = (id: string, url: string) => {
-    fetch(`${url}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ id }),
-    }).then((res) => {
-      if (res.ok) {
-        toast.success("Excluído com sucesso!");
-        window.location.reload();
-      }
-    });
-  };
 
   return (
     <div className="relative flex justify-center" ref={menuRef}>
@@ -64,7 +51,7 @@ const ActionMenu = ({
           <button
             onClick={() => {
               setIsOpen(false);
-              onClick();
+              onClickView();
             }}
             className="w-full text-left px-4 py-2.5 text-sm text-gray-300 hover:bg-blue-600 hover:text-white transition-colors flex items-center gap-3"
           >
@@ -85,7 +72,7 @@ const ActionMenu = ({
 
           <button
             onClick={() => {
-              deleteAction(id, url);
+              onClickDelete()
               setIsOpen(false);
             }}
             className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-red-950/30 transition-colors flex items-center gap-3"
@@ -97,4 +84,5 @@ const ActionMenu = ({
     </div>
   );
 };
+
 export default ActionMenu;

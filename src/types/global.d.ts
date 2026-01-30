@@ -115,5 +115,33 @@ declare global {
     role: number;
     avatar_url: string;
     created_at: string;
+    password?: string;
+  }
+
+  export interface ProductMetadata {
+    total: number;         
+    totalQuantity: number; 
+    totalPrice: number;   
+  }
+
+  export interface ProductData {
+    _id: string;
+    name: string;
+    description: string;
+    categorie: string;
+    quantity: number;
+    SKU: string;
+    price: number;
+    image?: string;
+  }
+
+  export interface ProductResponse {
+    metadata: ProductMetadata[];
+    data: ProductData[];
+  }
+
+  export interface RootProductResponse {
+    product: ProductResponse[];
+    totalDoc: number;
   }
 }
