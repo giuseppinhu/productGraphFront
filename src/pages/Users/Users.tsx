@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Search, UserPlus, Mail, Phone } from "lucide-react";
 import { toast } from "react-toastify";
 
-import UserModal from "../../components/UserModal/UserModal";
+import UserModal from "../../components/Modals/UserModal/UserModal";
 import ActionMenu from "../../components/ActionMenu/ActionMenu";
 import Loader from "../../components/Loader/Loader";
 import axios from "axios";
@@ -50,9 +50,11 @@ const ClientsPage = () => {
 
   useEffect(() => {
     axios
-      .post(`http://localhost:3000/data/users?page=${page}&search=${search}`, {
+      .post(`http://localhost:3000/data/users?page=${page}&search=${search}`, 
+        {
         companie_id: "69701e057dcfe0d233d57009",
-      })
+        }
+      )
       .then((res) => {
         setData(res);
         setIsLoading(false);
@@ -118,7 +120,8 @@ const ClientsPage = () => {
               name: "",
               email: "",
               role: 0,
-              avatar_url: "https://res.cloudinary.com/dhn5ceymi/image/upload/v1768948550/avatars/avatar_admin.png",
+              avatar_url:
+                "https://res.cloudinary.com/dhn5ceymi/image/upload/v1768948550/avatars/avatar_admin.png",
               created_at: String(new Date()),
             });
           }}
@@ -166,9 +169,7 @@ const ClientsPage = () => {
                       className="w-10 h-10 rounded-full border border-gray-800"
                     />
                     <div>
-                      <p className="font-semibold text-gray-200">
-                        {user.name}
-                      </p>
+                      <p className="font-semibold text-gray-200">{user.name}</p>
                       <p className="text-xs text-gray-500">ID: {user._id}</p>
                     </div>
                   </div>
@@ -199,8 +200,8 @@ const ClientsPage = () => {
                       setIsView(true);
                     }}
                     onClickDelete={() => {
-                      setIsDeleteModal(true)
-                      setUser(user)
+                      setIsDeleteModal(true);
+                      setUser(user);
                     }}
                     onClickEdit={() => {
                       setUser(user);
@@ -236,19 +237,19 @@ const ClientsPage = () => {
             Próximo
           </button>
         </div>
-      </div> 
+      </div>
 
-      <DeleteModal 
+      <DeleteModal
         isOpen={isDeleteModal}
         onClose={() => setIsDeleteModal(false)}
         url="http://localhost:3000/user/"
         itemId={user._id}
         loading={false}
-        />
+      />
 
       <AnimatePresence>
         {isModalOpen && (
-           <UserModal
+          <UserModal
             key="user-modal"
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
@@ -258,7 +259,6 @@ const ClientsPage = () => {
         )}
       </AnimatePresence>
     </div>
-    
   );
 };
 

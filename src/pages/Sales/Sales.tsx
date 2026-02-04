@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -5,7 +6,7 @@ import formatPrice from "../../utils/formatPrice";
 import { subString } from "../../utils/sliceString";
 import { getDate } from "../../utils/formatData";
 
-import ModernSalesSkeleton from "../../components/Loader/Loader";
+import Loader from "../../components/Loader/Loader";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
 
 const Sales = () => {
@@ -28,12 +29,12 @@ const Sales = () => {
   };
 
   useEffect(() => {
-    fetch(
-      `http://localhost:3000/data/sales?page=${page}&search=${searchTerm}&status=${status}`,
-    )
-      .then((res) => res.json())
+    axios
+      .get(
+        `http://localhost:3000/data/sales?page=${page}&search=${searchTerm}&status=${status}`,
+      )
       .then((data) => {
-        setData(data);
+        setData(data.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -41,8 +42,8 @@ const Sales = () => {
       });
   }, [page, searchTerm, status]);
 
-  if (loading) {
-    return <ModernSalesSkeleton />;
+  if (loading || data === null || data === undefined) {
+    return <Loader />;
   }
 
   return (
@@ -80,7 +81,9 @@ const Sales = () => {
             <p className="text-gray-400 text-sm">
               Proporção de Usuários Ativos
             </p>
-            <h3 className="text-2xl font-bold text-blue-400">{data.AUR}</h3>
+            <h3 className="text-2xl font-bold text-blue-400">
+              {data.AUR.toFixed(2)}
+            </h3>
           </div>
         </div>
 
@@ -127,50 +130,48 @@ const Sales = () => {
               </thead>
               <tbody className="divide-y divide-gray-800">
                 {(data.sales || []).map((sale: SalesData) => (
-                  <>
-                    <tr
-                      key={sale._id}
-                      className="hover:bg-gray-800/30 transition-colors"
-                    >
-                      <td className="px-6 py-4 font-mono text-blue-400">
-                        <span
-                          className="flex items-center gap-2"
-                          onClick={() => pasteId(sale._id)}
-                          style={{ cursor: "pointer" }}
+                  <tr
+                    key={sale._id}
+                    className="hover:bg-gray-800/30 transition-colors"
+                  >
+                    <td className="px-6 py-4 font-mono text-blue-400">
+                      <span
+                        className="flex items-center gap-2"
+                        onClick={() => pasteId(sale._id)}
+                        style={{ cursor: "pointer" }}
+                      >
+                        #{subString(sale._id)}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          id="Layer_1"
+                          height="20"
+                          viewBox="0 0 24 24"
+                          width="20"
+                          data-name="Layer 1"
+                          fill="oklch(70.7% 0.165 254.624)"
                         >
-                          #{subString(sale._id)}
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            id="Layer_1"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            width="20"
-                            data-name="Layer 1"
-                            fill="oklch(70.7% 0.165 254.624)"
-                          >
-                            <path d="m13 20a5.006 5.006 0 0 0 5-5v-8.757a3.972 3.972 0 0 0 -1.172-2.829l-2.242-2.242a3.972 3.972 0 0 0 -2.829-1.172h-4.757a5.006 5.006 0 0 0 -5 5v10a5.006 5.006 0 0 0 5 5zm-9-5v-10a3 3 0 0 1 3-3s4.919.014 5 .024v1.976a2 2 0 0 0 2 2h1.976c.01.081.024 9 .024 9a3 3 0 0 1 -3 3h-6a3 3 0 0 1 -3-3zm18-7v11a5.006 5.006 0 0 1 -5 5h-9a1 1 0 0 1 0-2h9a3 3 0 0 0 3-3v-11a1 1 0 0 1 2 0z" />
-                          </svg>
-                        </span>
-                      </td>
-                      <td className="px-6 py-4">
-                        <div className="font-medium text-white">
-                          {sale.clientData.name}
-                        </div>
-                      </td>
-                      <td className="px-6 py-4 text-gray-300">
-                        {sale.productData.name}
-                      </td>
-                      <td className="px-6 py-4 text-gray-400">
-                        {getDate(sale.saleDate)}
-                      </td>
-                      <td className="px-6 py-4 font-semibold">
-                        {formatPrice(sale.totalPrice)}
-                      </td>
-                      <td className="px-6 py-4">
-                        <StatusBadge status={sale.status} />
-                      </td>
-                    </tr>
-                  </>
+                          <path d="m13 20a5.006 5.006 0 0 0 5-5v-8.757a3.972 3.972 0 0 0 -1.172-2.829l-2.242-2.242a3.972 3.972 0 0 0 -2.829-1.172h-4.757a5.006 5.006 0 0 0 -5 5v10a5.006 5.006 0 0 0 5 5zm-9-5v-10a3 3 0 0 1 3-3s4.919.014 5 .024v1.976a2 2 0 0 0 2 2h1.976c.01.081.024 9 .024 9a3 3 0 0 1 -3 3h-6a3 3 0 0 1 -3-3zm18-7v11a5.006 5.006 0 0 1 -5 5h-9a1 1 0 0 1 0-2h9a3 3 0 0 0 3-3v-11a1 1 0 0 1 2 0z" />
+                        </svg>
+                      </span>
+                    </td>
+                    <td className="px-6 py-4">
+                      <div className="font-medium text-white">
+                        {sale.clientData.name}
+                      </div>
+                    </td>
+                    <td className="px-6 py-4 text-gray-300">
+                      {sale.productData.name}
+                    </td>
+                    <td className="px-6 py-4 text-gray-400">
+                      {getDate(sale.saleDate)}
+                    </td>
+                    <td className="px-6 py-4 font-semibold">
+                      {formatPrice(sale.totalPrice)}
+                    </td>
+                    <td className="px-6 py-4">
+                      <StatusBadge status={sale.status} />
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>

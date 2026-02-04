@@ -33,13 +33,19 @@ declare global {
 
   interface ProductSale {
     totalQuantity: number;
-    totalSales: MongoDecimal;
+    totalSales: number;
     name: string;
+  }
+
+  interface ProductItemProps {
+    name: string;
+    sales: number;
+    price: number;
   }
 
   interface RecentSale {
     _id: string;
-    totalPrice: MongoDecimal;
+    totalPrice: number;
     status: "pending" | "completed" | "canceled";
     saleDate: string;
     name: string;
@@ -119,9 +125,9 @@ declare global {
   }
 
   export interface ProductMetadata {
-    total: number;         
-    totalQuantity: number; 
-    totalPrice: number;   
+    total: number;
+    totalQuantity: number;
+    totalPrice: number;
   }
 
   export interface ProductData {

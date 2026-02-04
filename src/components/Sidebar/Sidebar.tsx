@@ -81,8 +81,11 @@ const Sidebar = () => {
             <p className="text-sm font-semibold text-white">Seu Nome</p>
             <p className="text-xs text-gray-500">Admin</p>
           </div>
-          <span className="ml-auto text-gray-600 text-xs cursor-pointer" onClick={() => console.log("adads")}>
-            <DoorOpen className="text-red-400 hover:text-red-800"/>
+          <span
+            className="ml-auto text-gray-600 text-xs cursor-pointer"
+            onClick={() => console.log("adads")}
+          >
+            <DoorOpen className="text-red-400 hover:text-red-800" />
           </span>
         </button>
       </div>

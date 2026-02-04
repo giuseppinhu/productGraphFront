@@ -1,12 +1,13 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
+import { io } from "socket.io-client";
 
 import KpiCard from "../Dashboard/KpiCard/KpiCard";
 import ProductItem from "../Dashboard/ProductItem/ProductItem";
 import TableRow from "../TableRow/TableRow";
 import Graphic from "../Dashboard/Graphic/Graphic";
 
-import { io } from "socket.io-client";
-import ModernSalesSkeleton from "../Loader/Loader";
+import Loader from "../Loader/Loader";
 
 const socket = io("http://localhost:3000", {
   transports: ["websocket"],
@@ -20,10 +21,10 @@ const Content = () => {
 
   useEffect(() => {
     const handleUpdate = () => {
-      fetch("http://localhost:3000/data/dashboard")
-        .then((res) => res.json())
+      axios
+        .get("http://localhost:3000/data/dashboard")
         .then((data) => {
-          setData(data as DashboardData);
+          setData(data.data as DashboardData);
           setLoading(false);
         })
         .catch((err) => {
@@ -43,7 +44,7 @@ const Content = () => {
   const { data: dashboardData } = data;
 
   if (loading || data === null) {
-    return <ModernSalesSkeleton />;
+    return <Loader />;
   }
 
   return (
@@ -123,7 +124,7 @@ const Content = () => {
                     key={product.name}
                     name={product.name}
                     sales={product.totalQuantity}
-                    price={product.totalSales.$numberDecimal}
+                    price={product.totalSales}
                   />
                 );
               })}
@@ -149,9 +150,6 @@ const Content = () => {
               </thead>
               <tbody className="divide-y divide-gray-800">
                 {dashboardData.salesLast.map((sale: RecentSale) => {
-                  const value = Number(
-                    sale.totalPrice?.$numberDecimal ?? sale.totalPrice ?? 0,
-                  );
                   return (
                     <TableRow
                       key={sale._id}
@@ -159,7 +157,7 @@ const Content = () => {
                       client={sale.name}
                       date={String(sale.saleDate)}
                       status={sale.status}
-                      value={value}
+                      value={sale.totalPrice}
                     />
                   );
                 })}

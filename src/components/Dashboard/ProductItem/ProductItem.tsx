@@ -1,11 +1,5 @@
 import formatPrice from "../../../utils/formatPrice";
 
-interface ProductItemProps {
-  name: string;
-  sales: number;
-  price: string;
-}
-
 const ProductItem = ({ name, sales, price }: ProductItemProps) => (
   <div className="flex items-center justify-between p-2 hover:bg-gray-800 rounded-lg transition">
     <div className="flex items-center gap-3">
@@ -18,7 +12,7 @@ const ProductItem = ({ name, sales, price }: ProductItemProps) => (
       </div>
     </div>
     <span className="text-sm font-semibold text-white">
-      {formatPrice(Number(price))}
+      {formatPrice(price)}
     </span>
   </div>
 );

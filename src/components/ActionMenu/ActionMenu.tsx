@@ -72,7 +72,7 @@ const ActionMenu = ({
 
           <button
             onClick={() => {
-              onClickDelete()
+              onClickDelete();
               setIsOpen(false);
             }}
             className="w-full text-left px-4 py-2.5 text-sm text-red-400 hover:bg-red-950/30 transition-colors flex items-center gap-3"
