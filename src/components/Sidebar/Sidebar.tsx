@@ -1,13 +1,17 @@
 import { DoorOpen } from "lucide-react";
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 
 import { useLocation } from "react-router-dom";
+import { api } from "../../../api";
+import { toast } from "react-toastify";
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("");
-
+  const [user, setUser] = useState({})
   const loc = useLocation();
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const currentPath = loc.pathname;
@@ -15,7 +19,28 @@ const Sidebar = () => {
     if (currentItem) {
       setActiveTab(currentItem.label);
     }
+
+    api
+      .post('/id/user', {})
+      .then(res => {
+        setUser(res.data.user.user)
+      })
+      .catch(error => {
+        console.log(error)
+      })
   }, [loc.pathname]);
+
+  const logout = () => {
+    api
+      .post("/logout")
+      .then(() => {
+        toast.info("Deslogado com sucesso!")
+        navigate("/")
+      })
+      .catch(error => {
+        console.log(error)
+      })
+  }
 
   const menuItems: NavItem[] = [
     { label: "Dashboard", icon: "📊", path: "/dashboard" },
@@ -73,17 +98,17 @@ const Sidebar = () => {
       <div className="p-4 border-t border-gray-900">
         <button className="w-full flex items-center gap-3 p-2 rounded-xl hover:bg-gray-900 transition-colors">
           <img
-            src="https://res.cloudinary.com/dhn5ceymi/image/upload/v1768948550/avatars/avatar_admin.png"
+            src={user.avatar_url}
             alt="User_Image"
             className="w-10 h-10 rounded-full border border-gray-800"
           />
           <div className="text-left">
-            <p className="text-sm font-semibold text-white">Seu Nome</p>
-            <p className="text-xs text-gray-500">Admin</p>
+            <p className="text-sm font-semibold text-white">{user.name}</p>
+            <p className="text-xs text-gray-500">{user.role ? "Admin" : "User"}</p>
           </div>
           <span
             className="ml-auto text-gray-600 text-xs cursor-pointer"
-            onClick={() => console.log("adads")}
+            onClick={() => logout()}
           >
             <DoorOpen className="text-red-400 hover:text-red-800" />
           </span>

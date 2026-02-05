@@ -1,6 +1,6 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
+import { api } from '../../../api'
 
 import KpiCard from "../Dashboard/KpiCard/KpiCard";
 import ProductItem from "../Dashboard/ProductItem/ProductItem";
@@ -8,6 +8,7 @@ import TableRow from "../TableRow/TableRow";
 import Graphic from "../Dashboard/Graphic/Graphic";
 
 import Loader from "../Loader/Loader";
+import { toast } from "react-toastify";
 
 const socket = io("http://localhost:3000", {
   transports: ["websocket"],
@@ -21,14 +22,17 @@ const Content = () => {
 
   useEffect(() => {
     const handleUpdate = () => {
-      axios
-        .get("http://localhost:3000/data/dashboard")
+      api
+        .post(
+          "/data/dashboard",
+        )
         .then((data) => {
           setData(data.data as DashboardData);
           setLoading(false);
         })
         .catch((err) => {
           console.error("Erro na busca", err);
+          toast.error("Erro Interno!");
         });
     };
 

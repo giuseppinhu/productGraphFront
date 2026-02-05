@@ -4,7 +4,7 @@ import { X, Save, User, Mail, Calendar, BookKey, Camera } from "lucide-react";
 
 import { getDate } from "../../../utils/formatData";
 import { toast } from "react-toastify";
-import axios from "axios";
+import { api } from "../../../../api";
 
 interface UserModalProps {
   isOpen: boolean;
@@ -57,11 +57,13 @@ const UserModal = ({ isOpen, onClose, client, view }: UserModalProps) => {
   }, [client, isOpen]);
 
   const createUser = async (data: any) => {
-    await axios
-      .post("http://localhost:3000/user", {
-        ...data,
-        companie_id: "69701e057dcfe0d233d57009",
-      })
+    await api
+      .post(
+        "/user",
+        {
+          ...data,
+        }
+      )
       .then(() => {
         toast.dark("Usuario criado com sucesso!");
         resetForm();
@@ -79,8 +81,8 @@ const UserModal = ({ isOpen, onClose, client, view }: UserModalProps) => {
       delete payload.password;
     }
 
-    await axios
-      .put("http://localhost:3000/update", payload)
+    await api
+      .put("/update", payload)
       .then(() => {
         toast.dark("Atualizado com sucesso!");
         setPreview(false);
@@ -96,11 +98,14 @@ const UserModal = ({ isOpen, onClose, client, view }: UserModalProps) => {
 
   const updateAvatar = async (id: any, file: any) => {
     setloading(true);
-    await axios
-      .postForm("http://localhost:3000/upload", {
-        file: file,
-        id: id,
-      })
+    await api
+      .postForm(
+        "/upload",
+        {
+          file: file,
+          id: id,
+        }
+      )
       .then((res) => {
         if (res.data.fileUrl) {
           setloading(false);

@@ -29,7 +29,7 @@ const DeleteModal = ({ isOpen, onClose, itemId, url }: DeleteModalProps) => {
           clearInterval(intervalId);
         })
         .catch((error) => {
-          console.log(error)
+          console.log(error);
           toast.error("Ocorreu um erro!" + "\n" + error.response.data.error);
           onClose();
           clearInterval(intervalId);

@@ -1,14 +1,15 @@
 import { useEffect, useState } from "react";
 import { Search, UserPlus, Mail, Phone } from "lucide-react";
 import { toast } from "react-toastify";
+import { AnimatePresence } from "framer-motion";
+import { api } from "../../../api";
 
 import UserModal from "../../components/Modals/UserModal/UserModal";
 import ActionMenu from "../../components/ActionMenu/ActionMenu";
 import Loader from "../../components/Loader/Loader";
-import axios from "axios";
+
 import { getDate } from "../../utils/formatData";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
-import { AnimatePresence } from "framer-motion";
 
 const ClientsPage = () => {
   const [search, setSearch] = useState("");
@@ -49,19 +50,16 @@ const ClientsPage = () => {
   });
 
   useEffect(() => {
-    axios
-      .post(`http://localhost:3000/data/users?page=${page}&search=${search}`, 
-        {
-        companie_id: "69701e057dcfe0d233d57009",
-        }
+    api
+      .post(
+        `/data/users?page=${page}&search=${search}`
       )
       .then((res) => {
         setData(res);
         setIsLoading(false);
       })
       .catch((error) => {
-        toast.error(error);
-        setIsLoading(true);
+        toast.error("Erro Interno!");
       });
   }, [page, search, isModalOpen, isDeleteModal]);
 

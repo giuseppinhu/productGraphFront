@@ -1,6 +1,4 @@
-import axios from "axios";
 import { useState, useEffect, useRef } from "react";
-import { toast } from "react-toastify";
 
 const ActionMenu = ({
   id,

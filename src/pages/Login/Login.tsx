@@ -1,17 +1,36 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
+import { api } from "../../../api";
 
 const Login = () => {
   const navigate = useNavigate();
 
-  const [email, setEmail] = useState<string>("");
-  const [password, setPassword] = useState<string>("");
+  const [userData, setUserData] = useState({ email: "", password: "" });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const formSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Login com:", { email, password });
 
-    navigate("/dashboard");
+    api
+      .post(
+        "/login",
+        {
+          email: userData.email,
+          password: userData.password,
+        },
+      )
+      .then((res) => {
+        console.log(res);
+        toast.success("Login efetuado com sucesso!");
+      })
+      .catch((error) => {
+        console.log(error);
+        toast.error("Ocorreu um erro! \n" + error.response.data.error);
+      });
+
+    setTimeout(() => {
+      navigate("/dashboard");
+    }, 1000);
   };
 
   return (
@@ -43,7 +62,7 @@ const Login = () => {
             </p>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form className="space-y-5">
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-1.5">
                 E-mail
@@ -51,8 +70,10 @@ const Login = () => {
               <input
                 required
                 type="email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                value={userData.email}
+                onChange={(e) =>
+                  setUserData({ ...userData, email: e.target.value })
+                }
                 placeholder="exemplo@dashsale.com"
                 className="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition"
               />
@@ -70,8 +91,10 @@ const Login = () => {
               <input
                 required
                 type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                value={userData.password}
+                onChange={(e) =>
+                  setUserData({ ...userData, password: e.target.value })
+                }
                 placeholder="••••••••"
                 className="w-full bg-gray-950 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder:text-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500/50 focus:border-blue-500 transition"
               />
@@ -80,6 +103,7 @@ const Login = () => {
             <button
               type="submit"
               className="w-full bg-blue-600 hover:bg-blue-500 text-white font-bold py-3 rounded-lg shadow-lg shadow-blue-500/20 transition-all active:scale-[0.98]"
+              onClick={formSubmit}
             >
               Entrar na Plataforma
             </button>

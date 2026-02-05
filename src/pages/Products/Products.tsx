@@ -2,13 +2,16 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Plus, Search } from "lucide-react";
+import { toast } from "react-toastify";
 
-import ProductModal from "../../components/Modals/ProductModal/ProductModal";
-import formatPrice from "../../utils/formatPrice";
 import Loader from "../../components/Loader/Loader";
-import { subString } from "../../utils/sliceString";
 import ActionMenu from "../../components/ActionMenu/ActionMenu";
 import DeleteModal from "../../components/DeleteModal/DeleteModal";
+import ProductModal from "../../components/Modals/ProductModal/ProductModal";
+
+import formatPrice from "../../utils/formatPrice";
+import { subString } from "../../utils/sliceString";
+import { api } from "../../../api";
 
 const Products = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -21,22 +24,21 @@ const Products = () => {
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");
-  const [product, setProduct] = useState({})
+  const [product, setProduct] = useState({});
+  const [companieId, setCompanieId] = useState("");
 
   useEffect(() => {
-    axios
+    api
       .post(
-        `http://localhost:3000/data/product?page=${page}&search=${search}`,
-        {
-          companie_id: "69701e247dcfe0d233d5700b",
-        },
+        `/data/product?page=${page}&search=${search}`
       )
       .then((res: any) => {
         setData(res.data);
+        setCompanieId(res.data.companieId);
         setLoading(false);
       })
-      .catch((error) => {
-        console.log(error);
+      .catch(() => {
+        toast.error("Erro Interno!");
       });
   }, [search, isModalOpen]);
 
@@ -98,13 +100,15 @@ const Products = () => {
         <button
           onClick={() => {
             setProduct({
-              id: '',
-              name: '',
+              id: "",
+              name: "",
               price: 0,
               quantity: 0,
-              categorie: '',
-              description: '',
-              product_url: 'https://res.cloudinary.com/dhn5ceymi/image/upload/v1769785236/caixa_ipbl5e.png'
+              categorie: "",
+              description: "",
+              companieId: companieId,
+              product_url:
+                "https://res.cloudinary.com/dhn5ceymi/image/upload/v1769785236/caixa_ipbl5e.png",
             });
             setIsModalOpen(true);
           }}
@@ -135,9 +139,9 @@ const Products = () => {
               >
                 <td className="px-6 py-4">
                   <div>
-                      <p className="font-semibold text-gray-200">
-                        #{subString(product._id)}
-                      </p>
+                    <p className="font-semibold text-gray-200">
+                      #{subString(product._id)}
+                    </p>
                   </div>
                 </td>
                 <td className="px-6 py-4">
@@ -176,31 +180,31 @@ const Products = () => {
                   </div>
                 </td>
                 <td className="px-6 py-4 text-center">
-                    <ActionMenu 
-                      id={product._id}
-                      url="http://localhost:3000/product"
-                      onClickView={() => {
-                        setProduct(product);
-                        setIsModalOpen(true);
-                        setIsView(true);
-                      }}
-                      onClickDelete={() => {
-                        setIsDeleteModal(true);
-                        setProduct(product);
-                      }}
-                      onClickEdit={() => {
-                        setProduct(product);
-                        setIsModalOpen(true);
-                        setIsView(false);
-                      }}
-                    />
+                  <ActionMenu
+                    id={product._id}
+                    url="http://localhost:3000/product"
+                    onClickView={() => {
+                      setProduct(product);
+                      setIsModalOpen(true);
+                      setIsView(true);
+                    }}
+                    onClickDelete={() => {
+                      setIsDeleteModal(true);
+                      setProduct(product);
+                    }}
+                    onClickEdit={() => {
+                      setProduct(product);
+                      setIsModalOpen(true);
+                      setIsView(false);
+                    }}
+                  />
                 </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
-      
+
       <DeleteModal
         isOpen={isDeleteModal}
         onClose={() => setIsDeleteModal(false)}
@@ -217,6 +221,7 @@ const Products = () => {
             isOpen={isModalOpen}
             onClose={() => setIsModalOpen(false)}
             product={product}
+            view={IsView}
           />
         )}
       </AnimatePresence>

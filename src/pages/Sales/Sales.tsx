@@ -8,6 +8,7 @@ import { getDate } from "../../utils/formatData";
 
 import Loader from "../../components/Loader/Loader";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
+import { api } from "../../../api";
 
 const Sales = () => {
   const [page, setPage] = useState(1);
@@ -29,9 +30,9 @@ const Sales = () => {
   };
 
   useEffect(() => {
-    axios
-      .get(
-        `http://localhost:3000/data/sales?page=${page}&search=${searchTerm}&status=${status}`,
+    api
+      .post(
+        `/data/sales?page=${page}&search=${searchTerm}&status=${status}`,
       )
       .then((data) => {
         setData(data.data);
@@ -39,6 +40,7 @@ const Sales = () => {
       })
       .catch((err) => {
         console.error("Erro ao buscar as vendas", err);
+        toast.error("Erro Interno!");
       });
   }, [page, searchTerm, status]);
 
