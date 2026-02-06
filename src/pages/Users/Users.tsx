@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Search, UserPlus, Mail, Phone } from "lucide-react";
 import { toast } from "react-toastify";
 import { AnimatePresence } from "framer-motion";
-import { api } from "../../../api";
+import { api } from "../../services/api";
 
 import UserModal from "../../components/Modals/UserModal/UserModal";
 import ActionMenu from "../../components/ActionMenu/ActionMenu";

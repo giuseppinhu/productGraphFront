@@ -1,10 +1,9 @@
 import { DoorOpen } from "lucide-react";
 import { useEffect, useState } from "react";
-import { useNavigate, NavLink } from "react-router-dom";
-
-import { useLocation } from "react-router-dom";
-import { api } from "../../../api";
+import { useNavigate, NavLink, useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
+
+import { api } from "../../services/api";
 
 const Sidebar = () => {
   const [activeTab, setActiveTab] = useState("");

@@ -8,6 +8,7 @@ import Layout from "./layout";
 import User from "./pages/Users/Users";
 import DashboardLayout from "./pages/Dashboard/Dashboard";
 import Products from "./pages/Products/Products";
+import AuthGuard from "./guard/AuthGuard";
 
 function App() {
   return (
@@ -17,11 +18,13 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/login" element={<Login />} />
 
-          <Route element={<Layout />}>
-            <Route path="/dashboard" element={<DashboardLayout />} />
-            <Route path="/sales" element={<Sales />} />
-            <Route path="/users" element={<User />} />
-            <Route path="/products" element={<Products />} />
+          <Route element={<AuthGuard />}>
+            <Route element={<Layout />}>
+              <Route path="/dashboard" element={<DashboardLayout />} />
+              <Route path="/sales" element={<Sales />} />
+              <Route path="/users" element={<User />} />
+              <Route path="/products" element={<Products />} />
+            </Route>
           </Route>
 
           <Route path="*" element={<h1>Página não encontrada</h1>} />

@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -8,7 +7,7 @@ import { getDate } from "../../utils/formatData";
 
 import Loader from "../../components/Loader/Loader";
 import StatusBadge from "../../components/StatusBadge/StatusBadge";
-import { api } from "../../../api";
+import { api } from "../../services/api";
 
 const Sales = () => {
   const [page, setPage] = useState(1);

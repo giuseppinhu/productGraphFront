@@ -4,7 +4,7 @@ import { X, Save, User, Mail, Calendar, BookKey, Camera } from "lucide-react";
 
 import { getDate } from "../../../utils/formatData";
 import { toast } from "react-toastify";
-import { api } from "../../../../api";
+import { api } from "../../../services/api";
 
 interface UserModalProps {
   isOpen: boolean;

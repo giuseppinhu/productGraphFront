@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { X, Save, Image as ImageIcon } from "lucide-react";
 import { toast } from "react-toastify";
-import { api } from "../../../../api";
+import { api } from "../../../services/api";
 
 const ProductModal = ({ onClose, product, view }: any) => {
   const [formData, setFormData] = useState({

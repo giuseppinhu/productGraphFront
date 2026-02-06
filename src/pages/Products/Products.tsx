@@ -1,4 +1,3 @@
-import axios from "axios";
 import { useEffect, useState } from "react";
 import { AnimatePresence } from "framer-motion";
 import { Plus, Search } from "lucide-react";
@@ -11,7 +10,7 @@ import ProductModal from "../../components/Modals/ProductModal/ProductModal";
 
 import formatPrice from "../../utils/formatPrice";
 import { subString } from "../../utils/sliceString";
-import { api } from "../../../api";
+import { api } from "../../services/api";
 
 const Products = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { io } from "socket.io-client";
-import { api } from '../../../api'
+import { api } from "../../services/api";
 
 import KpiCard from "../Dashboard/KpiCard/KpiCard";
 import ProductItem from "../Dashboard/ProductItem/ProductItem";

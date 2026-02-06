@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
-import { api } from "../../../api";
+import { api } from "../../services/api";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -20,7 +20,6 @@ const Login = () => {
         },
       )
       .then((res) => {
-        console.log(res);
         toast.success("Login efetuado com sucesso!");
       })
       .catch((error) => {
