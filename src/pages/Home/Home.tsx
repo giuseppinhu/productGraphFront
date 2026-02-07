@@ -83,7 +83,7 @@ const Home = () => {
               <div className="w-3 h-3 rounded-full bg-green-500/50"></div>
             </div>
             <img
-              src="https://images.unsplash.com/photo-1551288049-bbbda536639a?auto=format&fit=crop&q=80&w=2070"
+              src="https://res.cloudinary.com/dhn5ceymi/image/upload/v1770498177/Screenshot_2026-02-07_at_18-01-36_product-graph-front_towkzf.png"
               alt="Dashboard Preview"
               className="w-full opacity-80 group-hover:opacity-100 transition duration-700"
             />

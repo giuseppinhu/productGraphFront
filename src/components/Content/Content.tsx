@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { io } from "socket.io-client";
 import { api } from "../../services/api";
 
@@ -8,7 +9,6 @@ import TableRow from "../TableRow/TableRow";
 import Graphic from "../Dashboard/Graphic/Graphic";
 
 import Loader from "../Loader/Loader";
-import { toast } from "react-toastify";
 
 const socket = io("http://localhost:3000", {
   transports: ["websocket"],
@@ -169,7 +169,7 @@ const Content = () => {
             </table>
           </div>
         </div>
-      </main>
+      </main> 
     </div>
   );
 };

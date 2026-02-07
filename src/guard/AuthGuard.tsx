@@ -1,9 +1,29 @@
+
 import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { api } from '../services/api';
+import { useEffect, useState } from 'react';
 
 const AuthGuard = () => {
-  const { authenticated, loading } = useAuth();
-  console.log(authenticated)
+  const [loading, setLoading] = useState(true);
+  const [sucess, setSucess] = useState(false)
+
+   useEffect(() => {
+    const checkLogin = async () => {
+      await api
+      .get('/validate')
+        .then(res => {
+          setSucess(res.data.sucess)
+          setLoading(false)
+        })
+      .catch(error => {
+        setSucess(false)
+        setLoading(false)
+      })
+    };
+    
+    checkLogin();
+  }, []);
+
 
   if (loading) {
     return (
@@ -13,7 +33,7 @@ const AuthGuard = () => {
     );
   }
   
-  return authenticated ? <Outlet /> : <Navigate to="/login" replace />;
+  return sucess ? <Outlet /> : <Navigate to="/login" replace />;
 };
 
 export default AuthGuard;

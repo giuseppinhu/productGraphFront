@@ -100,7 +100,7 @@ const UserModal = ({ isOpen, onClose, client, view }: UserModalProps) => {
     setloading(true);
     await api
       .postForm(
-        "/upload",
+        "/user/upload",
         {
           file: file,
           id: id,
